@@ -1,26 +1,50 @@
 {
-  "name": "@unchil/telegram-bridge",
-  "version": "0.1.0",
+  "name": "@unchil/plugin-telegram-bridge",
+  "version": "1.0.0",
+  "type": "module",
   "private": true,
-  "description": "텔레그램 ↔ Paperclip 브릿지 서비스",
-  "main": "dist/index.js",
+  "description": "텔레그램 ↔ Paperclip 양방향 브릿지 플러그인. 텔레그램에서 이슈 생성/코멘트, Paperclip 활동 알림을 실시간 수신.",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsx src/index.ts",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "build": "node ./esbuild.config.mjs",
+    "build:rollup": "rollup -c",
+    "dev": "node ./esbuild.config.mjs --watch",
+    "dev:ui": "paperclip-plugin-dev-server --root . --ui-dir dist/ui --port 4177",
+    "test": "vitest run --config ./vitest.config.ts",
+    "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "node-fetch": "^3.3.2"
+  "paperclipPlugin": {
+    "manifest": "./dist/manifest.js",
+    "worker": "./dist/worker.js",
+    "ui": "./dist/ui/"
+  },
+  "keywords": [
+    "paperclip",
+    "plugin",
+    "telegram",
+    "connector",
+    "bridge"
+  ],
+  "author": "unchil",
+  "license": "MIT",
+  "pnpm": {
+    "overrides": {
+      "@paperclipai/shared": "file:.paperclip-sdk/paperclipai-shared-0.3.1.tgz"
+    }
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "tsx": "^4.19.2",
-    "typescript": "^5.8.3",
-    "vitest": "^1.6.1"
+    "@paperclipai/shared": "file:.paperclip-sdk/paperclipai-shared-0.3.1.tgz",
+    "@paperclipai/plugin-sdk": "file:.paperclip-sdk/paperclipai-plugin-sdk-1.0.0.tgz",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^24.6.0",
+    "@types/react": "^19.0.8",
+    "esbuild": "^0.27.3",
+    "rollup": "^4.38.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
   },
-  "engines": {
-    "node": ">=18"
+  "peerDependencies": {
+    "react": ">=18"
   }
 }
